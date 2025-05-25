@@ -1,4 +1,3 @@
-
 # Next.js Projekt
 
 Dies ist ein [Next.js](https://nextjs.org) Projekt, erstellt mit dem offiziellen Tool [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
@@ -60,7 +59,3 @@ DESCRIBE tabellenname;
 ```sql
 SELECT * FROM tabellenname LIMIT 10;
 ```
-
----
-
-Falls du weitere Fragen hast, stehe ich gerne zur Verfügung!

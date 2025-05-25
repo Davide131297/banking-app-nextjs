@@ -21,7 +21,7 @@ interface TransactionsTypes {
   transactions_sended: Transactions[];
 }
 
-interface User {
+export interface User {
   username: string;
   money?: number;
   transactions?: TransactionsTypes;

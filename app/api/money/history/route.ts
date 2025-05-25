@@ -83,7 +83,9 @@ export async function GET(req: NextRequest) {
       { headers: { "Cache-Control": "no-store" } }
     );
   } catch (err) {
-    console.error("Fehler beim Verifizieren des Tokens", err);
-    return NextResponse.json({ error: err }, { status: 401 });
+    return NextResponse.json(
+      { error: err instanceof Error ? err.message : String(err) },
+      { status: 401 }
+    );
   }
 }

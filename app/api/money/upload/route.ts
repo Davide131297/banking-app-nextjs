@@ -51,7 +51,6 @@ export async function POST(req: NextRequest) {
       }),
     ]);
   } catch (error) {
-    console.error("Transaktion Fehler:", error);
     return NextResponse.json(
       {
         error: "Aufladung fehlgeschlagen",

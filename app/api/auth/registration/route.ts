@@ -38,17 +38,18 @@ export async function POST(req: Request) {
     });
 
     // Antwort ohne Passwort zurückgeben
-    return NextResponse.json({
-      message: "Benutzer erfolgreich registriert",
-      user: {
-        id: newUser.id,
-        username: newUser.username,
-        money: newUser.money,
+    return NextResponse.json(
+      {
+        message: "Benutzer erfolgreich registriert",
+        user: {
+          id: newUser.id,
+          username: newUser.username,
+          money: newUser.money,
+        },
       },
-      status: 201,
-    });
-  } catch (err) {
-    console.error("Fehler bei der Registrierung:", err);
+      { status: 201 }
+    );
+  } catch {
     return NextResponse.json(
       { error: "Interner Serverfehler" },
       { status: 500 }

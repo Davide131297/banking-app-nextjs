@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "yarn runbe && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prismaUi": "bash -c 'npx prisma studio'"
+    "prismaUi": "bash -c 'npx prisma studio'",
+    "runbe": "bash -c 'docker start mysql-db'"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",

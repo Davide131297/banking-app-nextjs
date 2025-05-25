@@ -10,14 +10,23 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
+import { categories } from "@/utils/categories";
 
 export default function TransferDialog() {
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
   const [purpose, setPurpose] = useState("");
+  const [category, setCategory] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +47,7 @@ export default function TransferDialog() {
           receiver_username: receiver,
           amount: Number(amount),
           purpose,
+          category: category || null,
         }),
       });
 
@@ -62,6 +72,7 @@ export default function TransferDialog() {
       setReceiver("");
       setAmount("");
       setPurpose("");
+      setCategory("");
       setSuccess(null);
       setError(null);
       setLoading(false);
@@ -92,7 +103,9 @@ export default function TransferDialog() {
         <form onSubmit={handleSubmit}>
           <div className="grid gap-6 py-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="receiver">Empfänger</Label>
+              <Label htmlFor="receiver">
+                Empfänger <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="receiver"
                 value={receiver}
@@ -107,7 +120,9 @@ export default function TransferDialog() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="amount">Betrag (€)</Label>
+              <Label htmlFor="amount">
+                Betrag (€) <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="amount"
                 type="number"
@@ -122,6 +137,26 @@ export default function TransferDialog() {
                   success ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""
                 }`}
               />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="category">Kategorie</Label>
+              <Select
+                value={category}
+                onValueChange={setCategory}
+                disabled={isDisabled}
+                required
+              >
+                <SelectTrigger id="category" className="w-full">
+                  <SelectValue placeholder="Kategorie wählen" />
+                </SelectTrigger>
+                <SelectContent>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="purpose">Verwendungszweck</Label>

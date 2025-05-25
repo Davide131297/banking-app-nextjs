@@ -69,3 +69,7 @@ SELECT * FROM tabellenname LIMIT 10;
 ### Prisma Migration erstellen
 
 `npx prisma migrate dev --name <migration_name>`
+
+### Prisma neu Generieren
+
+`npx prisma generate`

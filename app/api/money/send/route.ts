@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
-  const { amount, receiver_username, purpose } = await req.json();
+  const { amount, receiver_username, purpose, category } = await req.json();
 
   if (!token) {
     return NextResponse.json(
@@ -82,6 +82,9 @@ export async function POST(req: NextRequest) {
           amount: amount,
           purpose: purpose,
           type: "TRANSFER",
+          category: category || null,
+          sender_balance_after: sender.money - amount,
+          receiver_balance_after: receiver.money + amount,
         },
       }),
     ]);

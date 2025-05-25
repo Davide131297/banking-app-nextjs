@@ -14,7 +14,10 @@ model transactions {
   amount                                    Float?
   date                                      DateTime @default(now()) @db.DateTime(0)
   purpose                                   String?  @db.VarChar(255)
+  category                                  CategoryType?
   type                                      TransactionType
+  sender_balance_after                      Float?
+  receiver_balance_after                    Float?
   user_transactions_receiver_usernameTouser user?    @relation("transactions_receiver_usernameTouser", fields: [receiver_username], references: [username], onDelete: Cascade, onUpdate: NoAction, map: "fk_receiver")
   user_transactions_sender_idTouser         user?     @relation("transactions_sender_idTouser", fields: [sender_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_sender")
 
@@ -35,4 +38,21 @@ model user {
 enum TransactionType {
   TRANSFER
   UPLOAD
+}
+
+enum CategoryType {
+  FOOD
+  RENT
+  FASHION
+  SHOPPING
+  GROCERIES
+  TRANSPORT
+  HEALTH
+  ENTERTAINMENT
+  UTILITIES
+  EDUCATION
+  TRAVEL
+  INSURANCE
+  SAVINGS
+  OTHER
 }

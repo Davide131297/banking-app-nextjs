@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
         amount: true,
         date: true,
         purpose: true,
+        category: true,
         type: true,
         user_transactions_sender_idTouser: {
           select: {
@@ -52,6 +53,9 @@ export async function GET(req: NextRequest) {
         receiver_username: true,
         amount: true,
         date: true,
+        purpose: true,
+        category: true,
+        type: true,
       },
       orderBy: { date: "desc" },
     });

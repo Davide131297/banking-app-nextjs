@@ -6,10 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { format } from "date-fns";
 import type { User } from "@/hooks/useUser";
 import type { TransactionsWithType } from "@/app/dashboard/page";
+import { categories } from "@/utils/categories";
 
 type DashboardTableProps = {
   user: User;
@@ -39,47 +39,65 @@ export default function DashboardTable({
           <TableHead>Typ</TableHead>
           <TableHead>Beteiligter</TableHead>
           <TableHead>Betrag</TableHead>
+          <TableHead>Kategorie</TableHead>
           <TableHead>Datum</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {allTransactions.map((tx) => (
-          <TableRow
-            key={tx.direction + tx.id}
-            className="cursor-pointer"
-            onClick={() => setSelectedTx(tx)}
-          >
-            <TableCell>
-              {tx.direction === "received" ? (
-                tx.type === "UPLOAD" ? (
-                  <span className="text-green-600">Aufgeladen</span>
+        {allTransactions.map((tx) => {
+          const cat = tx.category
+            ? categories.find((c) => c.value === tx.category)
+            : null;
+          return (
+            <TableRow
+              key={tx.direction + tx.id}
+              className="cursor-pointer"
+              onClick={() => setSelectedTx(tx)}
+            >
+              <TableCell>
+                {tx.direction === "received" ? (
+                  tx.type === "UPLOAD" ? (
+                    <span className="text-green-600">Aufgeladen</span>
+                  ) : (
+                    <span className="text-green-600">Empfangen</span>
+                  )
                 ) : (
-                  <span className="text-green-600">Empfangen</span>
-                )
-              ) : (
-                <span className="text-red-600">Gesendet</span>
-              )}
-            </TableCell>
-            <TableCell>
-              {tx.direction === "received"
-                ? tx.sender_username
-                : tx.receiver_username}
-            </TableCell>
-            <TableCell>
-              <span
-                className={
-                  tx.direction === "received"
-                    ? "text-green-600 font-mono"
-                    : "text-red-600 font-mono"
-                }
-              >
-                {tx.direction === "received" ? "+" : "-"}
-                {Number(tx.amount).toFixed(2)} €
-              </span>
-            </TableCell>
-            <TableCell>{format(tx.date, "dd.MM.yyyy HH:mm")}</TableCell>
-          </TableRow>
-        ))}
+                  <span className="text-red-600">Gesendet</span>
+                )}
+              </TableCell>
+              <TableCell>
+                {tx.direction === "received"
+                  ? tx.sender_username
+                  : tx.receiver_username}
+              </TableCell>
+              <TableCell>
+                <span
+                  className={
+                    tx.direction === "received"
+                      ? "text-green-600 font-mono"
+                      : "text-red-600 font-mono"
+                  }
+                >
+                  {tx.direction === "received" ? "+" : "-"}
+                  {Number(tx.amount).toFixed(2)} €
+                </span>
+              </TableCell>
+              <TableCell>
+                {cat ? (
+                  <span
+                    className="px-2 py-1 rounded text-xs font-semibold inline-block text-white"
+                    style={{ backgroundColor: cat.color }}
+                  >
+                    {cat.label}
+                  </span>
+                ) : (
+                  <span className="text-gray-400 text-xs">–</span>
+                )}
+              </TableCell>
+              <TableCell>{format(tx.date, "dd.MM.yyyy HH:mm")}</TableCell>
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
   );

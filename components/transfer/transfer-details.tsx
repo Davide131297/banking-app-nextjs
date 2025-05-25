@@ -8,6 +8,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import type { TransactionsWithType } from "@/app/dashboard/page";
+import { categories } from "@/utils/categories";
 
 type TransferDetailsProps = {
   selectedTx: TransactionsWithType | null;
@@ -48,6 +49,13 @@ export default function TransferDetails({
             <div>
               <strong>Betrag:</strong> {Number(selectedTx.amount).toFixed(2)} €
             </div>
+            {selectedTx.category && (
+              <div>
+                <strong>Kategorie:</strong>{" "}
+                {categories.find((cat) => cat.value === selectedTx.category)
+                  ?.label ?? selectedTx.category}
+              </div>
+            )}
             <div>
               <strong>Datum:</strong>{" "}
               {format(new Date(selectedTx.date), "dd.MM.yyyy HH:mm")}

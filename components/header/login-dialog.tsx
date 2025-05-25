@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser } from "@/hooks/useUser";
 
 import LoginForm from "./login-form";
@@ -24,10 +24,6 @@ export default function LoginDialog() {
   function handleLogout() {
     logout();
   }
-
-  useEffect(() => {
-    console.log("User state changed:", user);
-  }, [user]);
 
   const handleLoginSuccess = async () => {
     if (refreshUser) {

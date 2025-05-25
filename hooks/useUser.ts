@@ -6,6 +6,27 @@ type ApiTransactionReceived = Omit<Transactions, "sender_username"> & {
   user_transactions_sender_idTouser?: { username: string };
 };
 
+export type TransactionCategory =
+  | "FOOD"
+  | "RENT"
+  | "FASHION"
+  | "SHOPPING"
+  | "GROCERIES"
+  | "TRANSPORT"
+  | "HEALTH"
+  | "ENTERTAINMENT"
+  | "UTILITIES"
+  | "EDUCATION"
+  | "TRAVEL"
+  | "INSURANCE"
+  | "SAVINGS"
+  | "OTHER";
+
+type CashProcess = {
+  balance: number;
+  date: string;
+};
+
 export type Transactions = {
   id: number;
   sender_id: number;
@@ -15,18 +36,21 @@ export type Transactions = {
   sender_username?: string;
   purpose?: string;
   type: "UPLOAD" | "TRANSFER" | null;
+  category: TransactionCategory | null;
 };
 
-interface TransactionsTypes {
+type TransactionsTypes = {
   transactions_received: Transactions[];
   transactions_sended: Transactions[];
-}
+};
 
-export interface User {
+export type User = {
+  id: number;
   username: string;
   money?: number;
   transactions?: TransactionsTypes;
-}
+  cashProcess: CashProcess | null;
+};
 
 export function useUser() {
   const [user, setUser] = useState<User | null>(null);
@@ -46,9 +70,10 @@ export function useUser() {
       }
 
       // Beide Requests parallel ausführen
-      const [userRes, transactionsRes] = await Promise.all([
+      const [userRes, transactionsRes, cashHistory] = await Promise.all([
         fetch("/api/user"),
         fetch("/api/money/transactions"),
+        fetch("/api/money/history"),
       ]);
 
       if (!userRes.ok) {
@@ -82,9 +107,17 @@ export function useUser() {
         };
       }
 
+      let cashProcess: CashProcess | null = null;
+
+      if (cashHistory.ok) {
+        const cashHistoryData = await cashHistory.json();
+        cashProcess = cashHistoryData.cashProcess;
+      }
+
       setUser({
         ...userData.user,
         transactions,
+        cashProcess,
       });
     } catch (error) {
       console.error("Error fetching user data:", error);

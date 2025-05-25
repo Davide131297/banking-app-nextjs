@@ -125,7 +125,7 @@ export default function TransferUpload() {
                   : "bg-blue-600 hover:bg-blue-700"
               }`}
             >
-              {loading ? "Sende..." : success ? "Aufladen" : "Aufgeladen"}
+              {loading ? "Sende..." : success ? "Aufgeladen" : "Aufladen"}
             </Button>
           </DialogFooter>
         </form>

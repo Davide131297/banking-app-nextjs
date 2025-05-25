@@ -46,6 +46,7 @@ export async function POST(req: NextRequest) {
           amount,
           purpose: `Aufladung von ${amount} Euro`,
           type: "UPLOAD",
+          receiver_balance_after: decoded.user.money + amount,
         },
       }),
     ]);

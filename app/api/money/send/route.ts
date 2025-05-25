@@ -81,6 +81,7 @@ export async function POST(req: NextRequest) {
           receiver_username: receiver.username,
           amount: amount,
           purpose: purpose,
+          type: "TRANSFER",
         },
       }),
     ]);

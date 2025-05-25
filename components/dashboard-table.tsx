@@ -24,11 +24,11 @@ export default function DashboardTable({
   const allTransactions: TransactionsWithType[] = [
     ...(user?.transactions?.transactions_received || []).map((tx) => ({
       ...tx,
-      type: "received" as const,
+      direction: "received" as const,
     })),
     ...(user?.transactions?.transactions_sended || []).map((tx) => ({
       ...tx,
-      type: "sended" as const,
+      direction: "sended" as const,
     })),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
@@ -45,31 +45,35 @@ export default function DashboardTable({
       <TableBody>
         {allTransactions.map((tx) => (
           <TableRow
-            key={tx.type + tx.id}
+            key={tx.direction + tx.id}
             className="cursor-pointer"
             onClick={() => setSelectedTx(tx)}
           >
             <TableCell>
-              {tx.type === "received" ? (
-                <span className="text-green-600">Empfangen</span>
+              {tx.direction === "received" ? (
+                tx.type === "UPLOAD" ? (
+                  <span className="text-green-600">Aufgeladen</span>
+                ) : (
+                  <span className="text-green-600">Empfangen</span>
+                )
               ) : (
                 <span className="text-red-600">Gesendet</span>
               )}
             </TableCell>
             <TableCell>
-              {tx.type === "received"
+              {tx.direction === "received"
                 ? tx.sender_username
                 : tx.receiver_username}
             </TableCell>
             <TableCell>
               <span
                 className={
-                  tx.type === "received"
+                  tx.direction === "received"
                     ? "text-green-600 font-mono"
                     : "text-red-600 font-mono"
                 }
               >
-                {tx.type === "received" ? "+" : "-"}
+                {tx.direction === "received" ? "+" : "-"}
                 {Number(tx.amount).toFixed(2)} €
               </span>
             </TableCell>

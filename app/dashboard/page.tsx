@@ -1,16 +1,17 @@
 "use client";
 
 import { useUser } from "@/hooks/useUser";
-import TransferDialog from "@/components/transfer/transfer-dialog";
 import { Button } from "@/components/ui/button";
-import { BanknoteArrowDown, RotateCw } from "lucide-react";
+import { RotateCw } from "lucide-react";
 import type { Transactions } from "@/hooks/useUser";
 import { useState } from "react";
 import TransferDetails from "@/components/transfer/transfer-details";
+import TransferDialog from "@/components/transfer/transfer-dialog";
 import DashboardTable from "@/components/dashboard-table";
+import TransferUpload from "@/components/transfer/transfer-upload";
 
 export type TransactionsWithType = Transactions & {
-  type: "received" | "sended";
+  direction: "received" | "sended";
 };
 
 export default function DashboardPage() {
@@ -47,9 +48,7 @@ export default function DashboardPage() {
             <h2 className="text-xl font-semibold mb-2">Schnellaktionen</h2>
             <div className="flex flex-col gap-3">
               <TransferDialog />
-              <Button className="bg-green-600 hover:bg-green-700 shadow-md">
-                <BanknoteArrowDown /> Geld aufladen
-              </Button>
+              <TransferUpload />
               <Button className="w-full" onClick={refreshPage}>
                 <RotateCw /> Seite neuladen
               </Button>

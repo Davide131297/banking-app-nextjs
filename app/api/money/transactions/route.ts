@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
         amount: true,
         date: true,
         purpose: true,
+        type: true,
         user_transactions_sender_idTouser: {
           select: {
             username: true,

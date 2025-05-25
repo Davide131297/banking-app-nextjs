@@ -14,6 +14,7 @@ export type Transactions = {
   date: string;
   sender_username?: string;
   purpose?: string;
+  type: "UPLOAD" | "TRANSFER" | null;
 };
 
 interface TransactionsTypes {

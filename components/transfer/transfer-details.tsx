@@ -7,19 +7,11 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
+import type { TransactionsWithType } from "@/app/dashboard/page";
 
 type TransferDetailsProps = {
-  selectedTx: {
-    id: number;
-    sender_id: number;
-    sender_username?: string;
-    receiver_username: string;
-    amount: number;
-    date: string;
-    purpose?: string;
-    type: "received" | "sended";
-  } | null;
-  setSelectedTx: (tx: TransferDetailsProps["selectedTx"]) => void;
+  selectedTx: TransactionsWithType | null;
+  setSelectedTx: (tx: TransactionsWithType | null) => void;
 };
 
 export default function TransferDetails({
@@ -36,14 +28,23 @@ export default function TransferDetails({
           <div className="space-y-2">
             <div>
               <strong>Typ:</strong>{" "}
-              {selectedTx.type === "received" ? "Empfangen" : "Gesendet"}
+              {selectedTx.direction === "received"
+                ? selectedTx.type === "UPLOAD"
+                  ? "Aufgeladen"
+                  : "Empfangen"
+                : "Gesendet"}
             </div>
-            <div>
-              <strong>Beteiligter:</strong>{" "}
-              {selectedTx.type === "received"
-                ? selectedTx.sender_username
-                : selectedTx.receiver_username}
-            </div>
+            {!(
+              selectedTx.direction === "received" &&
+              selectedTx.type === "UPLOAD"
+            ) && (
+              <div>
+                <strong>Beteiligter:</strong>{" "}
+                {selectedTx.direction === "received"
+                  ? selectedTx.sender_username
+                  : selectedTx.receiver_username}
+              </div>
+            )}
             <div>
               <strong>Betrag:</strong> {Number(selectedTx.amount).toFixed(2)} €
             </div>

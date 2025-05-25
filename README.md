@@ -60,6 +60,12 @@ DESCRIBE tabellenname;
 SELECT * FROM tabellenname LIMIT 10;
 ```
 
-## Prisma UI
+## Prisma
+
+### Anzeigen der Prisma UI
 
 `npx prisma studio`
+
+### Prisma Migration erstellen
+
+`npx prisma migrate dev --name <migration_name>`

@@ -11,9 +11,11 @@ import { useRouter } from "next/navigation";
 export default function LoginForm({
   onSwitch,
   setOpen,
+  onLoginSuccess,
 }: {
   onSwitch: () => void;
   setOpen: (open: boolean) => void;
+  onLoginSuccess?: () => Promise<void> | void;
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -39,6 +41,10 @@ export default function LoginForm({
       if (data.status === 200) {
         setOpen(false);
         toast.success(data.message);
+        if (onLoginSuccess) {
+          // Rufen Sie die Callback-Funktion auf
+          await onLoginSuccess();
+        }
         router.push("/dashboard");
       } else {
         setError(data.error || "Login fehlgeschlagen");

@@ -34,7 +34,6 @@ export function useUser() {
   // Function to refresh user state
   const refreshUser = async () => {
     setLoading(true);
-    console.log("Refreshing user data...");
     try {
       const token = Cookies.get("token");
 
@@ -80,8 +79,6 @@ export function useUser() {
             transactionsData.transactions?.transactions_sended || [],
         };
       }
-
-      console.log("User data fetched successfully:", userData.user);
 
       setUser({
         ...userData.user,

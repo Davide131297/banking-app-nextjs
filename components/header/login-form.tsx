@@ -17,6 +17,7 @@ export default function LoginForm({
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
   const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -25,7 +26,6 @@ export default function LoginForm({
     setLoading(true);
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const username = formData.get("username");
     const password = formData.get("password");
     try {
       const res = await fetch("/api/auth/login", {
@@ -37,7 +37,6 @@ export default function LoginForm({
       const data = await res.json();
 
       if (data.status === 200) {
-        console.log("Login erfolgreich: ", data);
         setOpen(false);
         toast.success(data.message);
         router.push("/dashboard");
@@ -55,17 +54,17 @@ export default function LoginForm({
     <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
       <div className="grid gap-2">
         <Label htmlFor="username">Nutzername</Label>
-        <Input id="username" name="username" required />
+        <Input
+          id="username"
+          name="username"
+          required
+          value={username}
+          onChange={(e) => setUsername(e.target.value.toLowerCase())}
+        />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="password">Passwort</Label>
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          required
-          autoComplete="current-password"
-        />
+        <Input id="password" name="password" type="password" required />
       </div>
       {error && <div className="text-red-500 text-sm">{error}</div>}
       <Button type="submit" className="w-full" disabled={loading}>

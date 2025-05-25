@@ -16,6 +16,7 @@ export default function RegisterForm({
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -23,7 +24,6 @@ export default function RegisterForm({
     setLoading(true);
     const form = e.currentTarget;
     const formData = new FormData(form);
-    const username = formData.get("username");
     const password = formData.get("password");
     try {
       const res = await fetch("/api/auth/registration", {
@@ -36,7 +36,6 @@ export default function RegisterForm({
       if (data.status === 201) {
         //setOpen(false);
         setOpen(false);
-        console.log("Registrierung erfolgreich: ", data);
         toast.success(
           "Registrierung erfolgreich, du kannst dich jetzt einloggen"
         );
@@ -58,18 +57,13 @@ export default function RegisterForm({
           id="reg-username"
           name="username"
           required
-          autoComplete="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value.toLowerCase())}
         />
       </div>
       <div className="grid gap-2">
         <Label htmlFor="reg-password">Passwort</Label>
-        <Input
-          id="reg-password"
-          name="password"
-          type="password"
-          required
-          autoComplete="new-password"
-        />
+        <Input id="reg-password" name="password" type="password" required />
       </div>
       {error && <div className="text-red-500 text-sm">{error}</div>}
       <Button type="submit" className="w-full" disabled={loading}>

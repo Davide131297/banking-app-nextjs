@@ -11,9 +11,11 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import TransferDialog from "@/components/transfer/transfer-dialog";
+import { Button } from "@/components/ui/button";
+import { RotateCw } from "lucide-react";
 
 export default function DashboardPage() {
-  const { user, loading } = useUser();
+  const { user, loading, refreshUser } = useUser();
 
   if (loading) {
     return (
@@ -35,6 +37,12 @@ export default function DashboardPage() {
     })),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  console.log("All Transactions:", allTransactions);
+
+  function refreshPage() {
+    refreshUser();
+  }
+
   return (
     <div className="p-8 w-full">
       <h1 className="text-2xl font-bold mb-6">Willkommen, {user?.username}</h1>
@@ -51,13 +59,16 @@ export default function DashboardPage() {
             <h2 className="text-xl font-semibold mb-2">Schnellaktionen</h2>
             <div className="flex flex-col gap-3">
               <TransferDialog />
+              <Button className="w-full" onClick={refreshPage}>
+                <RotateCw /> Seite neuladen
+              </Button>
             </div>
           </div>
         </div>
         {/* Rechte Spalte: Transaktionen */}
         <div className="md:col-span-2">
           <h2 className="text-xl font-semibold mb-2">Letzte Transaktionen</h2>
-          <div className="max-h-80 overflow-y-auto w-full rounded-md border p-4">
+          <div className="max-h-[70vh] overflow-y-auto w-full rounded-md border p-4">
             <Table>
               <TableHeader>
                 <TableRow>

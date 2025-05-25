@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, XCircle } from "lucide-react";
+import { BanknoteArrowUp, CheckCircle2, XCircle } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { categories } from "@/utils/categories";
 
@@ -85,7 +85,7 @@ export default function TransferDialog() {
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className="bg-blue-600 hover:bg-blue-700 shadow-md">
-          Überweisung
+          <BanknoteArrowUp /> Überweisung
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

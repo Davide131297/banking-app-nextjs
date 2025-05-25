@@ -13,9 +13,19 @@ import { format } from "date-fns";
 import TransferDialog from "@/components/transfer/transfer-dialog";
 import { Button } from "@/components/ui/button";
 import { RotateCw } from "lucide-react";
+import type { Transactions } from "@/hooks/useUser";
+import { useState } from "react";
+import TransferDetails from "@/components/transfer/transfer-details";
+
+type TransactionsWithType = Transactions & {
+  type: "received" | "sended";
+};
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useUser();
+  const [selectedTx, setSelectedTx] = useState<TransactionsWithType | null>(
+    null
+  );
 
   if (loading) {
     return (
@@ -26,18 +36,16 @@ export default function DashboardPage() {
   }
 
   // Transaktionen zusammenführen und nach Datum sortieren
-  const allTransactions = [
+  const allTransactions: TransactionsWithType[] = [
     ...(user?.transactions?.transactions_received || []).map((tx) => ({
       ...tx,
-      type: "received",
+      type: "received" as const,
     })),
     ...(user?.transactions?.transactions_sended || []).map((tx) => ({
       ...tx,
-      type: "sended",
+      type: "sended" as const,
     })),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  console.log("All Transactions:", allTransactions);
 
   function refreshPage() {
     refreshUser();
@@ -80,7 +88,11 @@ export default function DashboardPage() {
               </TableHeader>
               <TableBody>
                 {allTransactions.map((tx) => (
-                  <TableRow key={tx.type + tx.id}>
+                  <TableRow
+                    key={tx.type + tx.id}
+                    className="cursor-pointer"
+                    onClick={() => setSelectedTx(tx)}
+                  >
                     <TableCell>
                       {tx.type === "received" ? (
                         <span className="text-green-600">Empfangen</span>
@@ -112,6 +124,11 @@ export default function DashboardPage() {
             </Table>
           </div>
         </div>
+        {/* Dialog für Transaktionsdetails */}
+        <TransferDetails
+          selectedTx={selectedTx}
+          setSelectedTx={setSelectedTx}
+        />
       </div>
     </div>
   );

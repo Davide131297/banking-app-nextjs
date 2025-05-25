@@ -59,3 +59,7 @@ DESCRIBE tabellenname;
 ```sql
 SELECT * FROM tabellenname LIMIT 10;
 ```
+
+## Prisma UI
+
+`npx prisma studio`

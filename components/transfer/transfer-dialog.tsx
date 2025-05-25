@@ -19,6 +19,7 @@ import { useUser } from "@/hooks/useUser";
 export default function TransferDialog() {
   const [receiver, setReceiver] = useState("");
   const [amount, setAmount] = useState("");
+  const [purpose, setPurpose] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +39,7 @@ export default function TransferDialog() {
         body: JSON.stringify({
           receiver_username: receiver,
           amount: Number(amount),
+          purpose,
         }),
       });
 
@@ -61,6 +63,7 @@ export default function TransferDialog() {
     if (!isOpen) {
       setReceiver("");
       setAmount("");
+      setPurpose("");
       setSuccess(null);
       setError(null);
       setLoading(false);
@@ -116,6 +119,20 @@ export default function TransferDialog() {
                 onChange={(e) => setAmount(e.target.value.replace(",", "."))}
                 placeholder="z.B. 10.00"
                 required
+                disabled={isDisabled}
+                className={`focus:ring-2 focus:ring-blue-400 ${
+                  success ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""
+                }`}
+              />
+            </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="purpose">Verwendungszweck</Label>
+              <Input
+                id="purpose"
+                value={purpose}
+                onChange={(e) => setPurpose(e.target.value)}
+                placeholder="z.B. Miete, Essen, Geschenk..."
+                maxLength={255}
                 disabled={isDisabled}
                 className={`focus:ring-2 focus:ring-blue-400 ${
                   success ? "bg-gray-100 text-gray-500 cursor-not-allowed" : ""

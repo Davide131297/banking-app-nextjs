@@ -6,14 +6,15 @@ type ApiTransactionReceived = Omit<Transactions, "sender_username"> & {
   user_transactions_sender_idTouser?: { username: string };
 };
 
-interface Transactions {
+export type Transactions = {
   id: number;
   sender_id: number;
   receiver_username: string;
   amount: number;
   date: string;
   sender_username?: string;
-}
+  purpose?: string;
+};
 
 interface TransactionsTypes {
   transactions_received: Transactions[];

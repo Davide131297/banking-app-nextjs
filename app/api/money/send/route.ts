@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
-  const { amount, receiver_username } = await req.json();
+  const { amount, receiver_username, purpose } = await req.json();
 
   if (!token) {
     return NextResponse.json(
@@ -80,12 +80,17 @@ export async function POST(req: NextRequest) {
           sender_id: sender.id,
           receiver_username: receiver.username,
           amount: amount,
+          purpose: purpose,
         },
       }),
     ]);
-  } catch {
+  } catch (error) {
+    console.error("Transaktion Fehler:", error);
     return NextResponse.json(
-      { error: "Transaktion fehlgeschlagen" },
+      {
+        error: "Transaktion fehlgeschlagen",
+        details: error instanceof Error ? error.message : error,
+      },
       { status: 500 }
     );
   }

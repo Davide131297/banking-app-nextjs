@@ -11,6 +11,8 @@ import DashboardTable from "@/components/dashboard-table";
 import TransferUpload from "@/components/transfer/transfer-upload";
 import CategoryPieChart from "@/components/category-pie";
 import CashLineChart from "@/components/cash-line";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export type TransactionsWithType = Transactions & {
   direction: "received" | "sended";
@@ -18,16 +20,23 @@ export type TransactionsWithType = Transactions & {
 
 export default function DashboardPage() {
   const { user, loading, refreshUser } = useUser();
+  const router = useRouter();
   const [selectedTx, setSelectedTx] = useState<TransactionsWithType | null>(
     null
   );
 
-  if (loading || !user) {
+  if (loading || user === null) {
     return (
       <div className="flex items-center justify-center h-screen">
         <p className="text-lg">Lade...</p>
       </div>
     );
+  }
+
+  if (user === undefined) {
+    router.push("/");
+    toast.error("Du bist nicht eingeloggt. Bitte melde dich an.");
+    return;
   }
 
   function refreshPage() {

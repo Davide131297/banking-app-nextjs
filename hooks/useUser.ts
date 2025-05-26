@@ -53,7 +53,7 @@ export type User = {
 };
 
 export function useUser() {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -64,7 +64,7 @@ export function useUser() {
       const token = Cookies.get("token");
 
       if (!token) {
-        setUser(null);
+        setUser(undefined);
         setLoading(false);
         return;
       }

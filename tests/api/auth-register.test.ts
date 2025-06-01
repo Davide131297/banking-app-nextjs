@@ -27,12 +27,14 @@ describe("POST /api/register", () => {
     (prisma.user.create as jest.Mock).mockResolvedValue({
       id: "user123",
       username: "newuser",
+      iban: "DE89370400440532013000",
       money: 0,
     });
 
     const req = createPostRequest({
       username: "newuser",
       password: "securepassword",
+      iban: "DE89370400440532013000",
     });
 
     const res = await POST(req);
@@ -43,6 +45,7 @@ describe("POST /api/register", () => {
     expect(body.user).toEqual({
       id: "user123",
       username: "newuser",
+      iban: "DE89370400440532013000",
       money: 0,
     });
   });
@@ -53,6 +56,7 @@ describe("POST /api/register", () => {
     const req = createPostRequest({
       username: "existinguser",
       password: "password123",
+      iban: "DE89370400440532013000",
     });
 
     const res = await POST(req);
@@ -69,7 +73,7 @@ describe("POST /api/register", () => {
     const body = await res.json();
 
     expect(res.status).toBe(400);
-    expect(body.error).toBe("Username und Passwort sind erforderlich");
+    expect(body.error).toBe("Username Passwort und IBAN sind erforderlich");
   });
 
   it("gibt 500 zurück bei internem Serverfehler", async () => {
@@ -80,6 +84,7 @@ describe("POST /api/register", () => {
     const req = createPostRequest({
       username: "newuser",
       password: "pw",
+      iban: "DE89370400440532013000",
     });
 
     const res = await POST(req);

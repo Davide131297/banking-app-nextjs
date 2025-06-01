@@ -25,10 +25,11 @@ export default function RegisterForm({
     const form = e.currentTarget;
     const formData = new FormData(form);
     const password = formData.get("password");
+    const iban = formData.get("iban");
     try {
       const res = await fetch("/api/auth/registration", {
         method: "POST",
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, iban }),
         headers: { "Content-Type": "application/json" },
       });
       if (!res.ok) throw new Error("Registrierung fehlgeschlagen");
@@ -64,6 +65,10 @@ export default function RegisterForm({
       <div className="grid gap-2">
         <Label htmlFor="reg-password">Passwort</Label>
         <Input id="reg-password" name="password" type="password" required />
+      </div>
+      <div className="grid gap-2">
+        <Label htmlFor="reg-iban">Passwort</Label>
+        <Input id="reg-iban" name="iban" type="text" required />
       </div>
       {error && <div className="text-red-500 text-sm">{error}</div>}
       <Button type="submit" className="w-full" disabled={loading}>

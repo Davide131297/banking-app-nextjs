@@ -4,11 +4,11 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const { username, password } = await req.json();
+    const { username, password, iban } = await req.json();
 
-    if (!username || !password) {
+    if (!username || !password || !iban) {
       return NextResponse.json(
-        { error: "Username und Passwort sind erforderlich" },
+        { error: "Username Passwort und IBAN sind erforderlich" },
         { status: 400 }
       );
     }
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
       data: {
         username,
         password: hashedPassword,
+        iban,
         money: 0,
       },
     });
@@ -44,6 +45,7 @@ export async function POST(req: Request) {
         user: {
           id: newUser.id,
           username: newUser.username,
+          iban: newUser.iban,
           money: newUser.money,
         },
       },

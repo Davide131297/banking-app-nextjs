@@ -29,6 +29,7 @@ model user {
   id                                                Int         @id @default(autoincrement())
   username                                          String         @unique(map: "username") @db.VarChar(255)
   password                                          String         @db.VarChar(255)
+  iban                                              String         @db.VarChar(255)
   money                                             Float?         @default(0)
   created                                           DateTime       @default(now()) @db.DateTime(0)
   transactions_transactions_receiver_usernameTouser transactions[] @relation("transactions_receiver_usernameTouser")
